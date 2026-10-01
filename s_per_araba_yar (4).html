@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Efsane Araba & Scooter Yarışı - Şehir ve İndirme Güncellemesi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap');
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #030712;
+            color: #ffffff;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+        }
+
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.90);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(59, 130, 246, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .glass-card.selected {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.18);
+            box-shadow: 0 0 25px rgba(34, 197, 94, 0.35);
+        }
+
+        .option-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .option-card.selected {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.25);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(34, 197, 94, 0.5);
+            border-radius: 3px;
+        }
+
+        .touch-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col justify-between items-center relative overflow-hidden bg-slate-950">
+
+    <!-- MAIN MENU OVERLAY -->
+    <div id="garageMenu" class="absolute inset-0 z-20 flex flex-col justify-between p-3 md:p-6 bg-slate-950/95 backdrop-blur-md overflow-y-auto">
+        <!-- Header -->
+        <div class="text-center my-1">
+            <h1 class="text-3xl md:text-5xl font-black font-orbitron tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 italic drop-shadow-lg">
+                TURBO YARIŞ 2D
+            </h1>
+            <p class="text-slate-400 text-xs md:text-sm font-semibold tracking-widest uppercase mt-0.5">
+                TRAFİK IŞIKLARI, YAYALAR VE 10 EFSANEVİ ARAÇ
+            </p>
+        </div>
+
+        <!-- Main Selection Area -->
+        <div class="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4 items-start my-auto py-2">
+            
+            <!-- Left Panel: 10 Vehicles List -->
+            <div class="lg:col-span-4 flex flex-col gap-2 max-h-[42vh] lg:max-h-[62vh] overflow-y-auto pr-1">
+                <span class="text-xs font-bold text-slate-400 font-orbitron tracking-wider px-1">1. ARAÇ SEÇİMİ</span>
+                
+                <!-- 0. Porsche 911 GT3 RS -->
+                <div onclick="selectCar(0)" id="car-card-0" class="glass-card selected p-2 rounded-xl cursor-pointer flex items-center justify-between border-l-4 border-l-emerald-500">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-400/50 flex items-center justify-center text-emerald-400 text-base">
+                            <i class="fa-solid fa-car-rear"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xs md:text-sm font-orbitron text-white">Porsche 911 GT3 RS</h3>
+                            <span class="text-[10px] text-emerald-400 font-semibold">Fıstık Yeşili Pist Canavarı</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-mono bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-700 font-bold">312 KM/S</span>
+                </div>
+
+                <!-- 1. Bugatti Chiron -->
+                <div onclick="selectCar(1)" id="car-card-1" class="glass-card p-2 rounded-xl cursor-pointer flex items-center justify-between border-l-4 border-l-blue-600">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-blue-600/30 border border-blue-400 flex items-center justify-center text-blue-400 text-base">
+                            <i class="fa-solid fa-bolt-lightning"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xs md:text-sm font-orbitron text-white">Bugatti Chiron</h3>
+                            <span class="text-[10px] text-blue-400 font-semibold">Mavi & Siyah Hiperkar</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-mono bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full border border-blue-700 font-bold">400 KM/S</span>
+                </div>
+
+                <!-- 2. Lamborghini Huracán -->
+                <div onclick="selectCar(2)" id="car-card-2" class="glass-card p-2 rounded-xl cursor-pointer flex items-center justify-between border-l-4 border-l-yellow-400">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-yellow-500/20 border border-yellow-400/40 flex items-center justify-center text-yellow-400 text-base">
+                            <i class="fa-solid fa-car-burst"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xs md:text-sm font-orbitron text-white">Lamborghini Huracán</h3>
+                            <span class="text-[10px] text-yellow-400 font-semibold">Parlak Sarı Süper Spor</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-mono bg-yellow-950 text-yellow-300 px-2 py-0.5 rounded-full border border-yellow-700 font-bold">325 KM/S</span>
+                </div>
+
+                <!-- 3. Volkswagen Golf 8 GTI -->
+                <div onclick="selectCar(3)" id="car-card-3" class="glass-card p-2 rounded-xl cursor-pointer flex items-center justify-between border-l-4 border-l-indigo-800">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-indigo-800/30 border border-indigo-500/40 flex items-center justify-center text-indigo-300 text-base">
+                            <i class="fa-solid fa-car-side"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xs md:text-sm font-orbitron text-white">VW Golf 8 GTI</h3>
+                            <span class="text-[10px] text-indigo-300 font-semibold">Lacivert Hot-Hatch</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-mono bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded-full border border-indigo-700 font-bold">250 KM/S</span>
+                </div>
+
+                <!-- 4. Onvo MX2 E-Scooter -->
+                <div onclick="selectCar(4)" id="car-card-4" class="glass-card p-2 rounded-xl cursor-pointer flex items-center justify-between border-l-4 border-l-teal-500">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-teal-500/20 border border-teal-400/40 flex items-center justify-center text-teal-400 text-base">
+                            <i class="fa-solid fa-person-biking"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xs md:text-sm font-orbitron text-white">Onvo MX2 Scooter</h3>
+                            <span class="text-[10px] text-teal-400 font-semibold">Siyah Elektrikli Scooter</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-mono bg-teal-950 text-teal-300 px-2 py-0.5 rounded-full border border-teal-700 font-bold">50 KM/S</span>
+                </div>
+
+                <!-- 5. Ferrari F40 -->
+                <div onclick="selectCar(5)" id="car-card-5" class="glass-card p-2 rounded-xl cursor-pointer flex items-center justify-between border-l-4 border-l-red-600">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-red-600/20 border border-red-500/40 flex items-center justify-center text-red-500 text-base">
+                            <i class="fa-solid fa-car-side"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xs md:text-sm font-orbitron text-white">Ferrari F40</h3>
+                            <span class="text-[10px] text-red-400 font-semibold">Kırmızı İtalyan Klasiği</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-mono bg-red-950 text-red-300 px-2 py-0.5 rounded-full border border-red-800">320 KM/S</span>
+                </div>
+
+                <!-- 6. McLaren W1 -->
+                <div onclick="selectCar(6)" id="car-card-6" class="glass-card p-2 rounded-xl cursor-pointer flex items-center justify-between border-l-4 border-l-slate-200">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-slate-200/20 border border-slate-300/40 flex items-center justify-center text-slate-200 text-base">
+                            <i class="fa-solid fa-car"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xs md:text-sm font-orbitron text-white">McLaren W1</h3>
+                            <span class="text-[10px] text-slate-300 font-semibold">Beyaz Aerodinamik</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-mono bg-slate-800 text-slate-200 px-2 py-0.5 rounded-full border border-slate-600">350 KM/S</span>
+                </div>
+
+                <!-- 7. Tofaş Doğan SLX -->
+                <div onclick="selectCar(7)" id="car-card-7" class="glass-card p-2 rounded-xl cursor-pointer flex items-center justify-between border-l-4 border-l-zinc-700">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-600 flex items-center justify-center text-zinc-300 text-base">
+                            <i class="fa-solid fa-car-rear"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xs md:text-sm font-orbitron text-white">Doğan SLX</h3>
+                            <span class="text-[10px] text-zinc-400 font-semibold">Siyah Drift Kralı</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-mono bg-zinc-900 text-zinc-300 px-2 py-0.5 rounded-full border border-zinc-700">180 KM/S</span>
+                </div>
+
+                <!-- 8. Fiat Doblo -->
+                <div onclick="selectCar(8)" id="car-card-8" class="glass-card p-2 rounded-xl cursor-pointer flex items-center justify-between border-l-4 border-l-pink-500">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-pink-500/20 border border-pink-500/40 flex items-center justify-center text-pink-400 text-base">
+                            <i class="fa-solid fa-van-shuttle"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xs md:text-sm font-orbitron text-white">Fiat Doblo 1.6</h3>
+                            <span class="text-[10px] text-pink-400 font-semibold">Pembe Multijet</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-mono bg-pink-950 text-pink-300 px-2 py-0.5 rounded-full border border-pink-800">170 KM/S</span>
+                </div>
+
+                <!-- 9. Renault Fluence -->
+                <div onclick="selectCar(9)" id="car-card-9" class="glass-card p-2 rounded-xl cursor-pointer flex items-center justify-between border-l-4 border-l-sky-500">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-sky-500/20 border border-sky-500/40 flex items-center justify-center text-sky-400 text-base">
+                            <i class="fa-solid fa-car-side"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xs md:text-sm font-orbitron text-white">Renault Fluence</h3>
+                            <span class="text-[10px] text-sky-400 font-semibold">Mavi Memur Paketi</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-mono bg-sky-950 text-sky-300 px-2 py-0.5 rounded-full border border-sky-800">195 KM/S</span>
+                </div>
+            </div>
+
+            <!-- Middle Panel: Vehicle Preview & Specs -->
+            <div class="lg:col-span-4 glass-panel p-4 rounded-2xl border border-slate-800 flex flex-col items-center">
+                <span class="text-xs font-bold text-slate-400 font-orbitron tracking-wider mb-2 self-start">ÖNİZLEME & PERFORMANS</span>
+                
+                <div class="w-full h-36 bg-slate-900/90 rounded-xl relative flex items-center justify-center border border-slate-800 mb-3 overflow-hidden">
+                    <div class="absolute inset-0 bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
+                    <canvas id="previewCanvas" width="220" height="110" class="z-10 filter drop-shadow-2xl"></canvas>
+                    <div class="absolute bottom-2 right-3 text-[10px] font-mono text-slate-400 font-bold" id="carTag">PORSCHE_911_GT3_RS</div>
+                </div>
+
+                <div class="w-full space-y-2 font-orbitron text-xs">
+                    <div>
+                        <div class="flex justify-between text-slate-300 mb-0.5">
+                            <span>MAKSİMUM HIZ</span>
+                            <span id="statSpeedVal" class="font-bold text-emerald-400">312 km/s</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                            <div id="statSpeed" class="bg-gradient-to-r from-emerald-500 to-cyan-400 h-full rounded-full transition-all duration-300" style="width: 78%;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-slate-300 mb-0.5">
+                            <span>HIZLANMA</span>
+                            <span id="statAccelVal" class="font-bold text-amber-400">3.2s</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                            <div id="statAccel" class="bg-gradient-to-r from-amber-500 to-yellow-300 h-full rounded-full transition-all duration-300" style="width: 85%;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-slate-300 mb-0.5">
+                            <span>YOL TUTUŞ & VİRAAJ</span>
+                            <span id="statHandlingVal" class="font-bold text-purple-400">Mükemmel</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                            <div id="statHandling" class="bg-gradient-to-r from-purple-500 to-pink-400 h-full rounded-full transition-all duration-300" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <p id="carDesc" class="text-xs text-slate-300 italic mt-3 text-center">"Devasa spoyleri ve özel fıstık yeşili rengiyle gerçek pist efsanesi!"</p>
+            </div>
+
+            <!-- Right Panel: Map & Weather Selection -->
+            <div class="lg:col-span-4 flex flex-col gap-3">
+                
+                <!-- Map Selection -->
+                <div class="glass-panel p-3.5 rounded-2xl border border-slate-800">
+                    <span class="text-xs font-bold text-slate-400 font-orbitron tracking-wider block mb-2">2. HARİTA SEÇİMİ</span>
+                    <div class="grid grid-cols-2 gap-2 font-orbitron text-xs">
+                        
+                        <div onclick="selectMap('highway')" id="map-opt-highway" class="option-card selected p-2 rounded-xl cursor-pointer flex flex-col items-center gap-1">
+                            <i class="fa-solid fa-road text-blue-400 text-lg"></i>
+                            <span class="font-bold text-white text-[11px]">Otoban</span>
+                        </div>
+
+                        <div onclick="selectMap('city')" id="map-opt-city" class="option-card p-2 rounded-xl cursor-pointer flex flex-col items-center gap-1">
+                            <i class="fa-solid fa-city text-purple-400 text-lg"></i>
+                            <span class="font-bold text-white text-[11px]">Şehir İçi</span>
+                        </div>
+
+                        <div onclick="selectMap('mountain')" id="map-opt-mountain" class="option-card p-2 rounded-xl cursor-pointer flex flex-col items-center gap-1">
+                            <i class="fa-solid fa-mountain text-emerald-400 text-lg"></i>
+                            <span class="font-bold text-white text-[11px]">Dağ Yolu</span>
+                        </div>
+
+                        <div onclick="selectMap('desert')" id="map-opt-desert" class="option-card p-2 rounded-xl cursor-pointer flex flex-col items-center gap-1">
+                            <i class="fa-solid fa-sun text-amber-400 text-lg"></i>
+                            <span class="font-bold text-white text-[11px]">Çöl Yolu</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Weather Selection -->
+                <div class="glass-panel p-3.5 rounded-2xl border border-slate-800">
+                    <span class="text-xs font-bold text-slate-400 font-orbitron tracking-wider block mb-2">3. HAVA DURUMU SEÇİMİ</span>
+                    <div class="grid grid-cols-2 gap-2 font-orbitron text-xs">
+                        
+                        <div onclick="selectWeather('sunny')" id="weather-opt-sunny" class="option-card selected p-2 rounded-xl cursor-pointer flex flex-col items-center gap-1">
+                            <i class="fa-solid fa-sun text-yellow-400 text-lg"></i>
+                            <span class="font-bold text-white text-[11px]">Güneşli</span>
+                        </div>
+
+                        <div onclick="selectWeather('rainy')" id="weather-opt-rainy" class="option-card p-2 rounded-xl cursor-pointer flex flex-col items-center gap-1">
+                            <i class="fa-solid fa-cloud-showers-heavy text-cyan-400 text-lg"></i>
+                            <span class="font-bold text-white text-[11px]">Yağmurlu</span>
+                        </div>
+
+                        <div onclick="selectWeather('snowy')" id="weather-opt-snowy" class="option-card p-2 rounded-xl cursor-pointer flex flex-col items-center gap-1">
+                            <i class="fa-solid fa-snowflake text-indigo-300 text-lg"></i>
+                            <span class="font-bold text-white text-[11px]">Karlı</span>
+                        </div>
+
+                        <div onclick="selectWeather('night')" id="weather-opt-night" class="option-card p-2 rounded-xl cursor-pointer flex flex-col items-center gap-1">
+                            <i class="fa-solid fa-moon text-blue-300 text-lg"></i>
+                            <span class="font-bold text-white text-[11px]">Gece</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Start Button, Download & Audio Toggle -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-2xl mx-auto w-full my-1">
+            <button id="soundToggleBtn" onclick="toggleAudio()" class="px-4 py-3 glass-panel rounded-xl text-slate-300 hover:text-white flex items-center justify-center gap-2 w-full sm:w-auto font-bold border border-slate-700 text-sm">
+                <i class="fa-solid fa-volume-high" id="soundIcon"></i>
+                <span id="soundText">Ses: Açık</span>
+            </button>
+            <button onclick="downloadGameHtml()" class="px-4 py-3 bg-blue-600/80 hover:bg-blue-500 rounded-xl text-white flex items-center justify-center gap-2 w-full sm:w-auto font-bold border border-blue-500 text-sm shadow-lg">
+                <i class="fa-solid fa-download"></i>
+                <span>İNDİR (.HTML)</span>
+            </button>
+            <button onclick="startGame()" class="w-full sm:w-1/2 py-3.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-500 hover:from-emerald-500 hover:to-cyan-400 text-white font-black font-orbitron text-lg rounded-xl shadow-lg shadow-emerald-600/30 tracking-wider transition-all duration-200 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3">
+                <i class="fa-solid fa-flag-checkered text-xl"></i> YARIŞA BAŞLA
+            </button>
+        </div>
+    </div>
+
+    <!-- GAME CANVAS & HUD -->
+    <div id="gameContainer" class="relative w-full h-full flex items-center justify-center overflow-hidden">
+        
+        <canvas id="gameCanvas" class="bg-slate-900 block"></canvas>
+
+        <!-- HUD -->
+        <div id="hud" class="hidden absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none font-orbitron z-10">
+            <div class="glass-panel p-3 rounded-xl border border-slate-700/80 min-w-[120px]">
+                <div class="text-[10px] text-slate-400 font-bold">SKOR</div>
+                <div id="hudScore" class="text-xl font-black text-amber-400">0</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">MESAFE: <span id="hudDistance" class="text-white font-mono">0m</span></div>
+            </div>
+
+            <div class="glass-panel px-5 py-2 rounded-2xl border border-slate-700/80 text-center flex flex-col items-center">
+                <div class="text-[10px] tracking-widest text-slate-400 font-bold">HIZ</div>
+                <div class="flex items-baseline gap-1">
+                    <span id="hudSpeed" class="text-3xl font-black text-cyan-400">0</span>
+                    <span class="text-xs text-slate-400">km/s</span>
+                </div>
+                <div class="w-32 bg-slate-800 h-2 rounded-full overflow-hidden mt-1 border border-slate-700">
+                    <div id="hudNitro" class="bg-gradient-to-r from-amber-500 to-yellow-300 h-full w-full transition-all duration-75"></div>
+                </div>
+                <div class="text-[8px] text-amber-300 font-bold mt-0.5">BOOST (SPACE)</div>
+            </div>
+
+            <div class="glass-panel p-3 rounded-xl border border-slate-700/80 text-right min-w-[120px]">
+                <div class="text-[10px] text-slate-400 font-bold">REKOR</div>
+                <div id="hudHighScore" class="text-lg font-bold text-emerald-400">0</div>
+                <div id="hudCarName" class="text-[10px] text-slate-300 font-bold mt-0.5 uppercase truncate">Porsche GT3 RS</div>
+            </div>
+        </div>
+
+        <!-- Touch Controls -->
+        <div id="mobileControls" class="hidden absolute bottom-4 left-4 right-4 justify-between items-end z-10 pointer-events-auto">
+            <div class="flex gap-2">
+                <button id="btnLeft" class="touch-btn w-14 h-14 rounded-2xl text-xl text-white flex items-center justify-center active:bg-white/30">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <button id="btnRight" class="touch-btn w-14 h-14 rounded-2xl text-xl text-white flex items-center justify-center active:bg-white/30">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <div class="flex gap-2">
+                <button id="btnBrake" class="touch-btn w-14 h-14 rounded-2xl text-lg text-red-400 flex items-center justify-center active:bg-red-500/30 border-red-500/40">
+                    <i class="fa-solid fa-ban"></i>
+                </button>
+                <button id="btnNitro" class="touch-btn w-14 h-14 rounded-2xl text-xl text-amber-400 flex items-center justify-center active:bg-amber-500/40 border-amber-500/40">
+                    <i class="fa-solid fa-bolt"></i>
+                </button>
+                <button id="btnGas" class="touch-btn w-14 h-14 rounded-2xl text-xl text-green-400 flex items-center justify-center active:bg-green-500/40 border-green-500/40">
+                    <i class="fa-solid fa-angles-up"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Over Menu -->
+        <div id="gameOverMenu" class="hidden absolute inset-0 z-30 flex flex-col items-center justify-center bg-slate-950/85 backdrop-blur-md p-6">
+            <div class="glass-panel p-8 rounded-3xl border border-red-500/30 max-w-md w-full text-center flex flex-col items-center shadow-2xl">
+                <div class="w-16 h-16 rounded-full bg-red-500/20 text-red-500 flex items-center justify-center text-3xl mb-3 border border-red-500/40">
+                    <i class="fa-solid fa-burst"></i>
+                </div>
+                <h2 class="text-3xl font-black font-orbitron text-red-500 mb-1 tracking-wider">KAZA YAPTIN!</h2>
+                <p class="text-slate-400 text-sm mb-6">Yüksek hızda kontrolü kaybettin.</p>
+
+                <div class="w-full bg-slate-900/80 rounded-xl p-4 mb-6 border border-slate-800 space-y-2 font-orbitron">
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-400">Skor:</span>
+                        <span id="goScore" class="text-2xl font-bold text-amber-400">0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-400">Mesafe:</span>
+                        <span id="goDistance" class="text-lg font-bold text-slate-200">0 m</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm pt-2 border-t border-slate-800">
+                        <span class="text-slate-400">En Yüksek Skor:</span>
+                        <span id="goHighScore" class="text-lg font-bold text-emerald-400">0</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col w-full gap-3 font-orbitron">
+                    <button onclick="restartGame()" class="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 tracking-wider transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> TEKRAR DENE
+                    </button>
+                    <button onclick="returnToGarage()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl border border-slate-700 transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-warehouse"></i> GARAJA DÖN
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT GAME ENGINE -->
+    <script>
+        /* --- VEHICLE CONFIGURATION (10 VEHICLES) --- */
+        const CARS = [
+            {
+                id: 'gt3rs',
+                name: 'Porsche 911 GT3 RS',
+                subtitle: 'Fıstık Yeşili Pist Canavarı',
+                color: '#22c55e',
+                accentColor: '#111827',
+                glassColor: '#38bdf8',
+                topSpeed: 312,
+                accel: 0.22,
+                decel: 0.35,
+                handling: 0.22,
+                nitroPower: 1.45,
+                width: 45,
+                height: 84,
+                desc: 'Devasa spoyleri, fıstık yeşili gövdesi ve virajlardaki muazzam stabilitesiyle gerçek yarış tutkusu!',
+                type: 'GT3RS'
+            },
+            {
+                id: 'chiron',
+                name: 'Bugatti Chiron',
+                subtitle: 'Mavi & Siyah Hiperkar',
+                color: '#2563eb',
+                accentColor: '#090d16',
+                glassColor: '#38bdf8',
+                topSpeed: 400,
+                accel: 0.24,
+                decel: 0.38,
+                handling: 0.16,
+                nitroPower: 1.5,
+                width: 46,
+                height: 86,
+                desc: '400 km/s hıza ulaşan W16 motorlu efsanevi mavi-siyah hiper Fransız canavarı!',
+                type: 'Chiron'
+            },
+            {
+                id: 'huracan',
+                name: 'Lamborghini Huracán',
+                subtitle: 'Parlak Sarı Süper Spor',
+                color: '#eab308',
+                accentColor: '#172554',
+                glassColor: '#38bdf8',
+                topSpeed: 325,
+                accel: 0.22,
+                decel: 0.36,
+                handling: 0.18,
+                nitroPower: 1.45,
+                width: 45,
+                height: 84,
+                desc: 'V10 motorlu sarı İtalyan fırtınası. Müthiş ivmelenme ve yüksek hız dengesi!',
+                type: 'Huracan'
+            },
+            {
+                id: 'golf',
+                name: 'VW Golf 8 GTI',
+                subtitle: 'Lacivert Hot-Hatch',
+                color: '#1e3a8a',
+                accentColor: '#991b1b',
+                glassColor: '#94a3b8',
+                topSpeed: 250,
+                accel: 0.18,
+                decel: 0.30,
+                handling: 0.15,
+                nitroPower: 1.35,
+                width: 43,
+                height: 80,
+                desc: 'Alman kalitesi GTI efsanesi. Şehirde ve otobanda süper stabil sürüş.',
+                type: 'Golf'
+            },
+            {
+                id: 'scooter',
+                name: 'Onvo MX2 Scooter',
+                subtitle: 'Siyah Elektrikli Scooter',
+                color: '#18181b',
+                accentColor: '#10b981',
+                glassColor: '#10b981',
+                topSpeed: 50,
+                accel: 0.28,
+                decel: 0.40,
+                handling: 0.35,
+                nitroPower: 1.5,
+                width: 22,
+                height: 52,
+                desc: 'Maksimum 50 km/s hız! Dar alanlardan kolayca sıyrılan ultra çevik e-scooter.',
+                type: 'Scooter'
+            },
+            {
+                id: 'f40',
+                name: 'Ferrari F40',
+                subtitle: 'Kırmızı İtalyan Klasiği',
+                color: '#ef4444',
+                accentColor: '#991b1b',
+                glassColor: '#38bdf8',
+                topSpeed: 320,
+                accel: 0.21,
+                decel: 0.34,
+                handling: 0.14,
+                nitroPower: 1.4,
+                width: 44,
+                height: 82,
+                desc: 'Efsanevi kırmızı yarış arabası. İkonik arka spoyler ve saf yarış atmosferi.',
+                type: 'Ferrari'
+            },
+            {
+                id: 'mclaren',
+                name: 'McLaren W1',
+                subtitle: 'Beyaz Aerodinamik',
+                color: '#f8fafc',
+                accentColor: '#334155',
+                glassColor: '#0284c7',
+                topSpeed: 350,
+                accel: 0.23,
+                decel: 0.37,
+                handling: 0.17,
+                nitroPower: 1.45,
+                width: 44,
+                height: 84,
+                desc: 'Geleceğin hiper arabası. Mükemmel aerodinamik ve hassas direksiyon tepkisi.',
+                type: 'McLaren'
+            },
+            {
+                id: 'dogan',
+                name: 'Tofaş Doğan SLX',
+                subtitle: 'Siyah Drift Kralı',
+                color: '#18181b',
+                accentColor: '#52525b',
+                glassColor: '#f59e0b',
+                topSpeed: 180,
+                accel: 0.15,
+                decel: 0.25,
+                handling: 0.22,
+                nitroPower: 1.25,
+                width: 42,
+                height: 80,
+                desc: 'Yanlamayı sevenlerin tercihi. Şehir sokaklarının efsanevi siyah drift makinesi!',
+                type: 'Dogan'
+            },
+            {
+                id: 'doblo',
+                name: 'Fiat Doblo 1.6',
+                subtitle: 'Pembe Multijet',
+                color: '#ec4899',
+                accentColor: '#9d174d',
+                glassColor: '#cbd5e1',
+                topSpeed: 170,
+                accel: 0.19,
+                decel: 0.28,
+                handling: 0.11,
+                nitroPower: 1.55,
+                width: 46,
+                height: 86,
+                desc: 'Canlı pembe kaplaması ve Enişte Nitro Boost sistemi ile tork canavarı!',
+                type: 'Doblo'
+            },
+            {
+                id: 'fluence',
+                name: 'Renault Fluence',
+                subtitle: 'Mavi Memur Paketi',
+                color: '#0284c7',
+                accentColor: '#0369a1',
+                glassColor: '#94a3b8',
+                topSpeed: 195,
+                accel: 0.16,
+                decel: 0.27,
+                handling: 0.13,
+                nitroPower: 1.3,
+                width: 43,
+                height: 82,
+                desc: 'Uzun yolların güvenilir dostu. Dengeli motor gücü ve konforlu sürüş.',
+                type: 'Fluence'
+            }
+        ];
+
+        /* --- MAP & WEATHER DATA --- */
+        const MAPS = {
+            highway: { name: 'Otoban', roadColor: '#1e293b', grassColor: '#166534', curbColor1: '#f8fafc', curbColor2: '#ef4444' },
+            city: { name: 'Şehir İçi', roadColor: '#0f172a', grassColor: '#334155', curbColor1: '#a855f7', curbColor2: '#06b6d4' },
+            mountain: { name: 'Dağ Yolu', roadColor: '#334155', grassColor: '#14532d', curbColor1: '#f8fafc', curbColor2: '#b91c1c' },
+            desert: { name: 'Çöl Yolu', roadColor: '#292524', grassColor: '#b45309', curbColor1: '#fef08a', curbColor2: '#ea580c' }
+        };
+
+        const WEATHERS = {
+            sunny: { name: 'Güneşli', friction: 1.0, lightOverlay: null },
+            rainy: { name: 'Yağmurlu', friction: 0.82, lightOverlay: 'rgba(15, 23, 42, 0.3)' },
+            snowy: { name: 'Karlı', friction: 0.68, lightOverlay: 'rgba(241, 245, 249, 0.2)' },
+            night: { name: 'Gece', friction: 1.0, lightOverlay: 'rgba(3, 7, 18, 0.78)' }
+        };
+
+        /* --- GLOBAL STATE VARIABLES --- */
+        let selectedCarIndex = 0;
+        let selectedMapKey = 'highway';
+        let selectedWeatherKey = 'sunny';
+        
+        let isAudioEnabled = true;
+        let audioCtx = null;
+        let engineOsc = null;
+        let engineGain = null;
+        let gameState = 'MENU';
+        let highScore = parseInt(localStorage.getItem('turbo_race_highscore_v5') || '0');
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const previewCanvas = document.getElementById('previewCanvas');
+        const previewCtx = previewCanvas.getContext('2d');
+
+        let player = {
+            x: 0, y: 0, vx: 0, vy: 0, speed: 0, nitro: 100, isNitroActive: false, score: 0, distance: 0
+        };
+
+        let keys = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false, w: false, s: false, a: false, d: false, Space: false };
+
+        let roadOffset = 0;
+        let obstacles = [];
+        let items = [];
+        let particles = [];
+        let skidMarks = [];
+        let weatherParticles = [];
+        
+        // Traffic Light & Pedestrian Systems
+        let trafficLight = {
+            y: -600,
+            state: 'green', // 'green', 'yellow', 'red'
+            timer: 0,
+            active: false
+        };
+
+        let pedestrians = [];
+        let crosswalks = [];
+
+        /* --- AUDIO SYNTHESIZER --- */
+        function initAudio() {
+            if (audioCtx) return;
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+                
+                engineOsc = audioCtx.createOscillator();
+                engineGain = audioCtx.createGain();
+                
+                engineOsc.type = 'sawtooth';
+                engineOsc.frequency.setValueAtTime(45, audioCtx.currentTime);
+                engineGain.gain.setValueAtTime(0, audioCtx.currentTime);
+                
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(450, audioCtx.currentTime);
+
+                engineOsc.connect(filter);
+                filter.connect(engineGain);
+                engineGain.connect(audioCtx.destination);
+                engineOsc.start();
+            } catch (e) {
+                console.warn('Audio error:', e);
+            }
+        }
+
+        function updateEngineSound(speedRatio, isNitro) {
+            if (!audioCtx || !isAudioEnabled || gameState !== 'PLAYING') {
+                if (engineGain) engineGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1);
+                return;
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const isScooter = CARS[selectedCarIndex].type === 'Scooter';
+            const baseFreq = isScooter ? 120 : 40;
+            const targetFreq = baseFreq + (speedRatio * (isScooter ? 300 : 260)) + (isNitro ? 80 : 0);
+            const targetGain = 0.1 + (speedRatio * 0.08);
+
+            engineOsc.type = isScooter ? 'sine' : 'sawtooth';
+            engineOsc.frequency.setTargetAtTime(targetFreq, audioCtx.currentTime, 0.08);
+            engineGain.gain.setTargetAtTime(targetGain, audioCtx.currentTime, 0.08);
+        }
+
+        function playSoundEffect(type) {
+            if (!audioCtx || !isAudioEnabled) return;
+            const now = audioCtx.currentTime;
+            
+            if (type === 'coin') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.exponentialRampToValueAtTime(1300, now + 0.15);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.15);
+                osc.start(now); osc.stop(now + 0.15);
+            } else if (type === 'nitro') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.linearRampToValueAtTime(480, now + 0.25);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.25);
+                osc.start(now); osc.stop(now + 0.25);
+            } else if (type === 'crash') {
+                const bufferSize = audioCtx.sampleRate * 0.4;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+                const crashGain = audioCtx.createGain();
+                crashGain.gain.setValueAtTime(0.5, now);
+                crashGain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                noise.connect(crashGain); crashGain.connect(audioCtx.destination);
+                noise.start(now);
+            }
+        }
+
+        function toggleAudio() {
+            isAudioEnabled = !isAudioEnabled;
+            const icon = document.getElementById('soundIcon');
+            const text = document.getElementById('soundText');
+            if (isAudioEnabled) {
+                icon.className = 'fa-solid fa-volume-high';
+                text.innerText = 'Ses: Açık';
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark';
+                text.innerText = 'Ses: Kapalı';
+                if (engineGain && audioCtx) engineGain.gain.setValueAtTime(0, audioCtx.currentTime);
+            }
+        }
+
+        /* --- DOWNLOAD HTML FILE FUNCTION --- */
+        function downloadGameHtml() {
+            const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Araba_Yarisi_Oyunu.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        /* --- SELECTION HANDLERS --- */
+        function selectCar(index) {
+            selectedCarIndex = index;
+            const car = CARS[index];
+
+            CARS.forEach((_, i) => {
+                const card = document.getElementById(`car-card-${i}`);
+                if (i === index) card.classList.add('selected');
+                else card.classList.remove('selected');
+            });
+
+            document.getElementById('statSpeedVal').innerText = `${car.topSpeed} km/s`;
+            document.getElementById('statSpeed').style.width = `${(car.topSpeed / 400) * 100}%`;
+
+            document.getElementById('statAccelVal').innerText = car.type === 'Scooter' ? 'Anında (0-50)' : `${(5.0 - car.accel * 12).toFixed(1)}s`;
+            document.getElementById('statAccel').style.width = `${car.accel * 380}%`;
+
+            document.getElementById('statHandlingVal').innerText = car.handling >= 0.3 ? 'Ultra Çevik' : car.handling >= 0.2 ? 'Mükemmel' : 'Dengeli';
+            document.getElementById('statHandling').style.width = `${Math.min(100, car.handling * 260)}%`;
+
+            document.getElementById('carDesc').innerText = `"${car.desc}"`;
+            document.getElementById('carTag').innerText = `${car.name.toUpperCase().replace(/\s+/g, '_')}`;
+
+            drawCarPreview(car);
+        }
+
+        function selectMap(mapKey) {
+            selectedMapKey = mapKey;
+            Object.keys(MAPS).forEach(k => {
+                const opt = document.getElementById(`map-opt-${k}`);
+                if (k === mapKey) opt.classList.add('selected');
+                else opt.classList.remove('selected');
+            });
+        }
+
+        function selectWeather(weatherKey) {
+            selectedWeatherKey = weatherKey;
+            Object.keys(WEATHERS).forEach(k => {
+                const opt = document.getElementById(`weather-opt-${k}`);
+                if (k === weatherKey) opt.classList.add('selected');
+                else opt.classList.remove('selected');
+            });
+        }
+
+        /* --- PREVIEW DRAWING --- */
+        function drawCarPreview(car) {
+            previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+            previewCtx.save();
+            previewCtx.translate(previewCanvas.width / 2, previewCanvas.height / 2);
+            previewCtx.rotate(Math.PI / 2);
+            drawTopDownCar(previewCtx, 0, 0, car, false, 0);
+            previewCtx.restore();
+        }
+
+        /* --- TOP DOWN CAR & ENTITY GRAPHICS ENGINE --- */
+        function drawTopDownCar(c, x, y, car, isPlayer = false, steeringAngle = 0) {
+            c.save();
+            c.translate(x, y);
+
+            const w = car.width;
+            const h = car.height;
+
+            if (car.type === 'Scooter') {
+                c.fillStyle = 'rgba(0, 0, 0, 0.4)';
+                c.beginPath();
+                c.ellipse(0, 4, w/2 + 2, h/2 + 4, 0, 0, Math.PI*2);
+                c.fill();
+
+                c.fillStyle = '#090d16';
+                c.fillRect(-4, -h/2 + 2, 8, 10);
+                c.fillRect(-4, h/2 - 12, 8, 10);
+
+                c.fillStyle = car.color;
+                c.beginPath();
+                c.roundRect(-w/2, -h/3, w, h*0.65, 6);
+                c.fill();
+
+                c.fillStyle = '#27272a';
+                c.fillRect(-w/2 + 3, -h/4, w - 6, h*0.45);
+
+                c.fillStyle = car.accentColor;
+                c.fillRect(-w/2 + 1, -h/4, 2, h*0.45);
+                c.fillRect(w/2 - 3, -h/4, 2, h*0.45);
+
+                c.save();
+                c.rotate(steeringAngle);
+                c.fillStyle = '#3f3f46';
+                c.fillRect(-16, -h/2 + 6, 32, 4);
+                c.fillStyle = '#10b981';
+                c.fillRect(-18, -h/2 + 5, 4, 6);
+                c.fillRect(14, -h/2 + 5, 4, 6);
+                c.fillStyle = '#fef08a';
+                c.beginPath();
+                c.arc(0, -h/2 + 4, 3, 0, Math.PI*2);
+                c.fill();
+                c.restore();
+
+                c.fillStyle = '#3b82f6';
+                c.beginPath();
+                c.ellipse(0, 2, 11, 7, 0, 0, Math.PI*2);
+                c.fill();
+                c.fillStyle = '#0f172a';
+                c.beginPath();
+                c.arc(0, 2, 6, 0, Math.PI*2);
+                c.fill();
+                c.fillStyle = '#10b981';
+                c.fillRect(-4, -2, 8, 3);
+
+            } else {
+                // Wheels
+                c.fillStyle = '#0f172a';
+                c.fillRect(-w/2 - 2, h/4 - 6, 4, 12);
+                c.fillRect(w/2 - 2, h/4 - 6, 4, 12);
+
+                c.save();
+                c.translate(-w/2, -h/4);
+                c.rotate(steeringAngle);
+                c.fillRect(-2, -6, 4, 12);
+                c.restore();
+
+                c.save();
+                c.translate(w/2, -h/4);
+                c.rotate(steeringAngle);
+                c.fillRect(-2, -6, 4, 12);
+                c.restore();
+
+                c.fillStyle = 'rgba(0, 0, 0, 0.4)';
+                c.beginPath();
+                c.roundRect(-w/2 - 3, -h/2 + 2, w + 6, h, 8);
+                c.fill();
+
+                if (car.type === 'GT3RS') {
+                    c.fillStyle = car.color;
+                    c.beginPath();
+                    c.moveTo(0, -h/2);
+                    c.quadraticCurveTo(w/2 + 2, -h/4, w/2, h/4);
+                    c.quadraticCurveTo(w/2 + 3, h/2 - 4, w/2 - 2, h/2);
+                    c.lineTo(-w/2 + 2, h/2);
+                    c.quadraticCurveTo(-w/2 - 3, h/2 - 4, -w/2, h/4);
+                    c.quadraticCurveTo(-w/2 - 2, -h/4, 0, -h/2);
+                    c.fill();
+
+                    c.fillStyle = car.accentColor;
+                    c.fillRect(-6, -h/2 + 10, 12, 6);
+                    c.beginPath();
+                    c.roundRect(-w/2 + 6, -h/6, w - 12, h/3, 4);
+                    c.fill();
+
+                    c.fillStyle = car.glassColor;
+                    c.beginPath();
+                    c.roundRect(-w/2 + 7, -h/6 + 2, w - 14, 12, 3);
+                    c.fill();
+
+                    c.fillStyle = '#111827';
+                    c.fillRect(-w/2 - 4, h/2 - 10, w + 8, 7);
+                    c.fillStyle = car.color;
+                    c.fillRect(-w/2 - 5, h/2 - 12, 3, 10);
+                    c.fillRect(w/2 + 2, h/2 - 12, 3, 10);
+
+                } else if (car.type === 'Chiron') {
+                    c.fillStyle = car.color;
+                    c.beginPath();
+                    c.roundRect(-w/2, -h/2, w, h, [14, 14, 8, 8]);
+                    c.fill();
+
+                    c.fillStyle = car.accentColor;
+                    c.beginPath();
+                    c.moveTo(-w/2, -h/8);
+                    c.quadraticCurveTo(-w/2 + 8, 0, -w/2, h/2);
+                    c.lineTo(w/2, h/2);
+                    c.quadraticCurveTo(w/2 - 8, 0, w/2, -h/8);
+                    c.fill();
+
+                    c.fillStyle = car.glassColor;
+                    c.beginPath();
+                    c.roundRect(-w/2 + 5, -h/4 + 2, w - 10, 15, 5);
+                    c.fill();
+
+                } else if (car.type === 'Huracan') {
+                    c.fillStyle = car.color;
+                    c.beginPath();
+                    c.moveTo(0, -h/2);
+                    c.lineTo(w/2, -h/4);
+                    c.lineTo(w/2 + 1, h/2 - 6);
+                    c.lineTo(w/2 - 4, h/2);
+                    c.lineTo(-w/2 + 4, h/2);
+                    c.lineTo(-w/2 - 1, h/2 - 6);
+                    c.lineTo(-w/2, -h/4);
+                    c.closePath();
+                    c.fill();
+
+                    c.fillStyle = '#0f172a';
+                    c.beginPath();
+                    c.moveTo(0, -h/4);
+                    c.lineTo(w/2 - 6, -h/8);
+                    c.lineTo(w/2 - 8, h/4);
+                    c.lineTo(-w/2 + 8, h/4);
+                    c.lineTo(-w/2 + 6, -h/8);
+                    c.closePath();
+                    c.fill();
+
+                } else {
+                    c.fillStyle = car.color;
+                    c.beginPath();
+                    c.roundRect(-w/2, -h/2, w, h, 10);
+                    c.fill();
+
+                    c.fillStyle = car.accentColor;
+                    c.beginPath();
+                    c.roundRect(-w/2 + 4, -h/4, w - 8, h/2 - 2, 6);
+                    c.fill();
+
+                    c.fillStyle = car.glassColor;
+                    c.beginPath();
+                    c.roundRect(-w/2 + 5, -h/4 + 2, w - 10, 14, 4);
+                    c.fill();
+                }
+
+                // Lights
+                c.fillStyle = '#fef08a';
+                c.fillRect(-w/2 + 3, -h/2, 6, 3);
+                c.fillRect(w/2 - 9, -h/2, 6, 3);
+
+                c.fillStyle = '#ef4444';
+                c.fillRect(-w/2 + 3, h/2 - 3, 7, 3);
+                c.fillRect(w/2 - 10, h/2 - 3, 7, 3);
+            }
+
+            // Exhaust Flame
+            if (isPlayer && player.isNitroActive && player.speed > 2) {
+                c.fillStyle = car.type === 'Scooter' ? '#10b981' : '#38bdf8';
+                c.beginPath();
+                c.arc(0, h/2 + 6 + Math.random()*6, 4 + Math.random()*3, 0, Math.PI*2);
+                c.fill();
+            }
+
+            c.restore();
+        }
+
+        /* --- GAME ENGINE SETUP --- */
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            if (gameState === 'PLAYING') {
+                player.x = Math.max(getRoadLeft() + 25, Math.min(getRoadRight() - 25, player.x));
+            }
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        function getRoadWidth() { return Math.min(canvas.width * 0.85, 500); }
+        function getRoadLeft() { return (canvas.width - getRoadWidth()) / 2; }
+        function getRoadRight() { return getRoadLeft() + getRoadWidth(); }
+
+        window.addEventListener('keydown', e => {
+            if (keys.hasOwnProperty(e.key) || keys.hasOwnProperty(e.code)) {
+                keys[e.key] = true; keys[e.code] = true;
+                if (e.code === 'Space') e.preventDefault();
+            }
+        });
+
+        window.addEventListener('keyup', e => {
+            if (keys.hasOwnProperty(e.key) || keys.hasOwnProperty(e.code)) {
+                keys[e.key] = false; keys[e.code] = false;
+            }
+        });
+
+        function setupTouchEvents() {
+            const bindTouch = (id, keyName) => {
+                const btn = document.getElementById(id);
+                if (!btn) return;
+                btn.addEventListener('touchstart', (e) => { e.preventDefault(); keys[keyName] = true; });
+                btn.addEventListener('touchend', (e) => { e.preventDefault(); keys[keyName] = false; });
+            };
+            bindTouch('btnLeft', 'ArrowLeft');
+            bindTouch('btnRight', 'ArrowRight');
+            bindTouch('btnGas', 'ArrowUp');
+            bindTouch('btnBrake', 'ArrowDown');
+            bindTouch('btnNitro', 'Space');
+        }
+
+        function startGame() {
+            initAudio();
+            gameState = 'PLAYING';
+
+            document.getElementById('garageMenu').classList.add('hidden');
+            document.getElementById('gameOverMenu').classList.add('hidden');
+            document.getElementById('hud').classList.remove('hidden');
+
+            if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+                document.getElementById('mobileControls').classList.remove('hidden');
+                document.getElementById('mobileControls').classList.add('flex');
+            }
+
+            const car = CARS[selectedCarIndex];
+            player = {
+                x: canvas.width / 2,
+                y: canvas.height - 150,
+                vx: 0,
+                vy: 0,
+                speed: 0,
+                nitro: 100,
+                isNitroActive: false,
+                score: 0,
+                distance: 0
+            };
+
+            obstacles = [];
+            items = [];
+            particles = [];
+            skidMarks = [];
+            weatherParticles = [];
+            pedestrians = [];
+            crosswalks = [];
+            roadOffset = 0;
+
+            trafficLight = {
+                y: -800,
+                state: 'green',
+                timer: 0,
+                active: true
+            };
+
+            if (selectedWeatherKey === 'rainy' || selectedWeatherKey === 'snowy') {
+                for (let i = 0; i < 60; i++) {
+                    weatherParticles.push({
+                        x: Math.random() * window.innerWidth,
+                        y: Math.random() * window.innerHeight,
+                        speed: 8 + Math.random() * 8,
+                        size: selectedWeatherKey === 'rainy' ? 15 : 3 + Math.random() * 3
+                    });
+                }
+            }
+
+            document.getElementById('hudCarName').innerText = car.name;
+            document.getElementById('hudHighScore').innerText = highScore;
+
+            resizeCanvas();
+        }
+
+        function restartGame() { startGame(); }
+
+        function returnToGarage() {
+            gameState = 'MENU';
+            document.getElementById('gameOverMenu').classList.add('hidden');
+            document.getElementById('hud').classList.add('hidden');
+            document.getElementById('mobileControls').classList.add('hidden');
+            document.getElementById('garageMenu').classList.remove('hidden');
+            selectCar(selectedCarIndex);
+        }
+
+        /* --- UPDATE LOOP --- */
+        function update() {
+            if (gameState !== 'PLAYING') return;
+
+            const car = CARS[selectedCarIndex];
+            const weather = WEATHERS[selectedWeatherKey];
+
+            const isAccelerating = keys.ArrowUp || keys.w;
+            const isBraking = keys.ArrowDown || keys.s;
+            const isLeft = keys.ArrowLeft || keys.a;
+            const isRight = keys.ArrowRight || keys.d;
+            const isNitroPressed = keys.Space || keys['Space'];
+
+            // Nitro Logic
+            if (isNitroPressed && player.nitro > 5 && isAccelerating) {
+                player.isNitroActive = true;
+                player.nitro = Math.max(0, player.nitro - 0.75);
+                if (Math.random() < 0.25) playSoundEffect('nitro');
+            } else {
+                player.isNitroActive = false;
+                if (player.nitro < 100) player.nitro += 0.16;
+            }
+
+            // Speed & Smooth Acceleration/Deceleration
+            const maxSpeedCap = car.topSpeed / 18;
+            const currentMaxSpeed = player.isNitroActive ? maxSpeedCap * car.nitroPower : maxSpeedCap;
+
+            if (isAccelerating) {
+                player.speed = Math.min(player.speed + car.accel, currentMaxSpeed);
+            } else if (isBraking) {
+                player.speed = Math.max(player.speed - car.decel, -1.5);
+            } else {
+                player.speed *= 0.985;
+            }
+
+            // Steering Physics
+            let turnSpeed = car.handling * weather.friction;
+            if (isLeft) player.vx -= turnSpeed * (player.speed / maxSpeedCap + 0.2);
+            if (isRight) player.vx += turnSpeed * (player.speed / maxSpeedCap + 0.2);
+
+            player.vx *= 0.86;
+            player.x += player.vx * (player.speed * 0.45 + 2);
+
+            // Skid Marks
+            if ((isBraking && player.speed > 4) || (Math.abs(player.vx) > 1.1 && player.speed > 4)) {
+                if (car.type !== 'Scooter') {
+                    skidMarks.push({ x: player.x, y: player.y + 20, alpha: 0.6 });
+                }
+            }
+
+            // Off-Road Friction
+            const roadL = getRoadLeft() + car.width / 2;
+            const roadR = getRoadRight() - car.width / 2;
+
+            if (player.x < roadL || player.x > roadR) {
+                player.speed *= 0.92;
+                particles.push({
+                    x: player.x, y: player.y + car.height / 2,
+                    vx: (Math.random() - 0.5) * 3, vy: player.speed + Math.random() * 2,
+                    color: selectedMapKey === 'desert' ? '#d97706' : '#854d0e',
+                    size: 3 + Math.random() * 3, life: 18
+                });
+            }
+
+            roadOffset = (roadOffset + player.speed * 2.5) % 80;
+
+            if (player.speed > 0.5) {
+                player.distance += player.speed * 0.1;
+                player.score += Math.floor(player.speed * (player.isNitroActive ? 2.2 : 1));
+            }
+
+            updateEngineSound(player.speed / maxSpeedCap, player.isNitroActive);
+
+            // --- TRAFFIC LIGHTS & CROSSWALK SYSTEM ---
+            trafficLight.y += player.speed * 2.5;
+            trafficLight.timer++;
+
+            if (trafficLight.timer > 300) {
+                if (trafficLight.state === 'green') trafficLight.state = 'yellow';
+                else if (trafficLight.state === 'yellow') trafficLight.state = 'red';
+                else if (trafficLight.state === 'red') trafficLight.state = 'green';
+                trafficLight.timer = 0;
+            }
+
+            if (trafficLight.y > canvas.height + 200) {
+                trafficLight.y = -1200 - Math.random() * 800;
+                trafficLight.state = 'green';
+                trafficLight.timer = 0;
+                
+                // Spawn Crosswalk and Pedestrians
+                crosswalks.push({ y: trafficLight.y + 80 });
+                for (let i = 0; i < 2; i++) {
+                    pedestrians.push({
+                        x: getRoadLeft() - 30 + (i * (getRoadWidth() + 60)),
+                        y: trafficLight.y + 80,
+                        vx: i === 0 ? 1.2 : -1.2,
+                        size: 10
+                    });
+                }
+            }
+
+            // Red Light Violation Check
+            if (trafficLight.state === 'red' && Math.abs(player.y - trafficLight.y) < 30 && player.speed > 2) {
+                player.score = Math.max(0, player.score - 5); // Violation Penalty
+            }
+
+            // Update Crosswalks
+            for (let i = crosswalks.length - 1; i >= 0; i--) {
+                crosswalks[i].y += player.speed * 2.5;
+                if (crosswalks[i].y > canvas.height + 100) crosswalks.splice(i, 1);
+            }
+
+            // Update Pedestrians
+            for (let i = pedestrians.length - 1; i >= 0; i--) {
+                const ped = pedestrians[i];
+                ped.y += player.speed * 2.5;
+                ped.x += ped.vx;
+
+                // Check collision with player
+                const dist = Math.hypot(player.x - ped.x, player.y - ped.y);
+                if (dist < 22) {
+                    triggerGameOver();
+                    return;
+                }
+
+                if (ped.y > canvas.height + 100) pedestrians.splice(i, 1);
+            }
+
+            // Traffic Vehicles
+            if (Math.random() < 0.026 + (player.score / 70000)) spawnObstacle();
+            if (Math.random() < 0.014) spawnItem();
+
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                const obs = obstacles[i];
+                
+                // Traffic stops at red light
+                let obsSpeed = obs.speed;
+                if (trafficLight.state === 'red' && obs.y < trafficLight.y && obs.y > trafficLight.y - 180) {
+                    obsSpeed = 0;
+                }
+
+                obs.y += player.speed * 2.5 - obsSpeed;
+
+                if (checkCollision(player, CARS[selectedCarIndex], obs)) {
+                    triggerGameOver();
+                    return;
+                }
+
+                if (obs.y > canvas.height + 150 || obs.y < -300) obstacles.splice(i, 1);
+            }
+
+            // Collectibles
+            for (let i = items.length - 1; i >= 0; i--) {
+                const item = items[i];
+                item.y += player.speed * 2.5;
+
+                const dist = Math.hypot(player.x - item.x, player.y - item.y);
+                if (dist < 32) {
+                    if (item.type === 'coin') {
+                        player.score += 300; playSoundEffect('coin');
+                    } else if (item.type === 'nitro') {
+                        player.nitro = Math.min(100, player.nitro + 45); playSoundEffect('nitro');
+                    }
+                    items.splice(i, 1);
+                    continue;
+                }
+                if (item.y > canvas.height + 100) items.splice(i, 1);
+            }
+
+            // Weather Particles Update
+            weatherParticles.forEach(wp => {
+                wp.y += wp.speed + player.speed;
+                if (wp.y > canvas.height) {
+                    wp.y = -20;
+                    wp.x = Math.random() * canvas.width;
+                }
+            });
+
+            // Particles Decay
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx; p.y += p.vy; p.life--;
+                if (p.life <= 0) particles.splice(i, 1);
+            }
+
+            for (let i = skidMarks.length - 1; i >= 0; i--) {
+                skidMarks[i].y += player.speed * 2.5;
+                skidMarks[i].alpha -= 0.01;
+                if (skidMarks[i].alpha <= 0 || skidMarks[i].y > canvas.height) skidMarks.splice(i, 1);
+            }
+
+            // HUD Speed
+            document.getElementById('hudSpeed').innerText = Math.floor(player.speed * 18);
+            document.getElementById('hudScore').innerText = player.score;
+            document.getElementById('hudDistance').innerText = `${Math.floor(player.distance)}m`;
+            document.getElementById('hudNitro').style.width = `${player.nitro}%`;
+        }
+
+        function spawnObstacle() {
+            const roadL = getRoadLeft() + 40;
+            const roadW = getRoadWidth() - 80;
+            const laneWidth = roadW / 3;
+            const lane = Math.floor(Math.random() * 3);
+            const x = roadL + lane * laneWidth + laneWidth / 2;
+
+            if (obstacles.some(o => Math.abs(o.y - (-100)) < 160 && Math.abs(o.x - x) < 30)) return;
+
+            const trafficColors = ['#0284c7', '#16a34a', '#ca8a04', '#9333ea', '#ea580c', '#475569'];
+            obstacles.push({
+                x: x, y: -120, width: 40, height: 76,
+                color: trafficColors[Math.floor(Math.random() * trafficColors.length)],
+                speed: 1.5 + Math.random() * 2.5
+            });
+        }
+
+        function spawnItem() {
+            const roadL = getRoadLeft() + 40;
+            const roadW = getRoadWidth() - 80;
+            const x = roadL + Math.random() * roadW;
+            items.push({ x: x, y: -50, type: Math.random() < 0.65 ? 'coin' : 'nitro' });
+        }
+
+        function checkCollision(p, pCar, obs) {
+            const pLeft = p.x - pCar.width / 2 + 2;
+            const pRight = p.x + pCar.width / 2 - 2;
+            const pTop = p.y - pCar.height / 2 + 2;
+            const pBottom = p.y + pCar.height / 2 - 2;
+
+            return !(pRight < (obs.x - obs.width/2) || pLeft > (obs.x + obs.width/2) || pBottom < (obs.y - obs.height/2) || pTop > (obs.y + obs.height/2));
+        }
+
+        function triggerGameOver() {
+            gameState = 'GAMEOVER';
+            playSoundEffect('crash');
+
+            if (player.score > highScore) {
+                highScore = player.score;
+                localStorage.setItem('turbo_race_highscore_v5', highScore);
+            }
+
+            document.getElementById('goScore').innerText = player.score;
+            document.getElementById('goDistance').innerText = `${Math.floor(player.distance)} m`;
+            document.getElementById('goHighScore').innerText = highScore;
+
+            document.getElementById('gameOverMenu').classList.remove('hidden');
+        }
+
+        /* --- RENDER ENGINE --- */
+        function render() {
+            const map = MAPS[selectedMapKey];
+            const weather = WEATHERS[selectedWeatherKey];
+
+            ctx.fillStyle = map.grassColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const roadL = getRoadLeft();
+            const roadW = getRoadWidth();
+            const roadR = getRoadRight();
+
+            // Barriers
+            const curbWidth = 12;
+            ctx.fillStyle = map.curbColor1;
+            ctx.fillRect(roadL - curbWidth, 0, curbWidth, canvas.height);
+            ctx.fillRect(roadR, 0, curbWidth, canvas.height);
+
+            ctx.fillStyle = map.curbColor2;
+            for (let y = -80; y < canvas.height; y += 40) {
+                ctx.fillRect(roadL - curbWidth, (y + roadOffset) % (canvas.height + 80) - 40, curbWidth, 20);
+                ctx.fillRect(roadR, (y + roadOffset) % (canvas.height + 80) - 40, curbWidth, 20);
+            }
+
+            // Asphalt
+            ctx.fillStyle = map.roadColor;
+            ctx.fillRect(roadL, 0, roadW, canvas.height);
+
+            // Crosswalk Lines
+            crosswalks.forEach(cw => {
+                ctx.fillStyle = '#f8fafc';
+                for (let x = roadL + 10; x < roadR - 10; x += 30) {
+                    ctx.fillRect(x, cw.y, 18, 35);
+                }
+            });
+
+            // Road Lines
+            ctx.strokeStyle = '#f8fafc';
+            ctx.lineWidth = 4;
+            ctx.setLineDash([30, 30]);
+            ctx.lineDashOffset = -roadOffset;
+
+            ctx.beginPath();
+            ctx.moveTo(roadL + roadW / 3, 0);
+            ctx.lineTo(roadL + roadW / 3, canvas.height);
+            ctx.moveTo(roadL + (roadW / 3) * 2, 0);
+            ctx.lineTo(roadL + (roadW / 3) * 2, canvas.height);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Traffic Light Pole & Lights
+            if (trafficLight.y > -100 && trafficLight.y < canvas.height + 100) {
+                ctx.fillStyle = '#0f172a';
+                ctx.fillRect(roadL - 45, trafficLight.y - 40, 26, 80); // Left Pole
+                ctx.fillRect(roadR + 19, trafficLight.y - 40, 26, 80); // Right Pole
+
+                // Draw Red, Yellow, Green Lights
+                const drawLight = (lx) => {
+                    ctx.fillStyle = trafficLight.state === 'red' ? '#ef4444' : '#450a0a';
+                    ctx.beginPath(); ctx.arc(lx, trafficLight.y - 22, 7, 0, Math.PI * 2); ctx.fill();
+
+                    ctx.fillStyle = trafficLight.state === 'yellow' ? '#eab308' : '#451a03';
+                    ctx.beginPath(); ctx.arc(lx, trafficLight.y, 7, 0, Math.PI * 2); ctx.fill();
+
+                    ctx.fillStyle = trafficLight.state === 'green' ? '#22c55e' : '#052e16';
+                    ctx.beginPath(); ctx.arc(lx, trafficLight.y + 22, 7, 0, Math.PI * 2); ctx.fill();
+                };
+
+                drawLight(roadL - 32);
+                drawLight(roadR + 32);
+            }
+
+            // Pedestrians Rendering
+            pedestrians.forEach(ped => {
+                ctx.fillStyle = '#38bdf8'; // Pedestrian shirt
+                ctx.beginPath(); ctx.arc(ped.x, ped.y, 7, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#fde047'; // Head
+                ctx.beginPath(); ctx.arc(ped.x, ped.y - 1, 4, 0, Math.PI * 2); ctx.fill();
+            });
+
+            // Skid Marks
+            skidMarks.forEach(sm => {
+                ctx.fillStyle = `rgba(15, 23, 42, ${sm.alpha})`;
+                ctx.fillRect(sm.x - 12, sm.y, 6, 12);
+                ctx.fillRect(sm.x + 6, sm.y, 6, 12);
+            });
+
+            // Collectibles
+            items.forEach(item => {
+                ctx.save();
+                ctx.translate(item.x, item.y);
+                if (item.type === 'coin') {
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.beginPath(); ctx.arc(0, 0, 12, 0, Math.PI * 2); ctx.fill();
+                    ctx.fillStyle = '#fef08a';
+                    ctx.font = 'bold 12px Orbitron'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText('₺', 0, 1);
+                } else {
+                    ctx.fillStyle = '#3b82f6';
+                    ctx.beginPath(); ctx.roundRect(-8, -12, 16, 24, 4); ctx.fill();
+                    ctx.fillStyle = '#fbbf24'; ctx.fillRect(-4, -6, 8, 12);
+                }
+                ctx.restore();
+            });
+
+            // Traffic
+            obstacles.forEach(obs => {
+                const trafficCarData = {
+                    width: obs.width, height: obs.height, color: obs.color, accentColor: '#0f172a', glassColor: '#38bdf8', type: 'Standard'
+                };
+                drawTopDownCar(ctx, obs.x, obs.y, trafficCarData, false, 0);
+            });
+
+            // Particles
+            particles.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+            });
+
+            // Player Vehicle
+            if (gameState === 'PLAYING') {
+                const car = CARS[selectedCarIndex];
+                let steeringAngle = 0;
+                if (keys.ArrowLeft || keys.a) steeringAngle = -0.28;
+                if (keys.ArrowRight || keys.d) steeringAngle = 0.28;
+
+                // Night Headlights
+                if (selectedWeatherKey === 'night') {
+                    ctx.save();
+                    ctx.translate(player.x, player.y);
+                    const gradient = ctx.createRadialGradient(0, -100, 10, 0, -100, 180);
+                    gradient.addColorStop(0, 'rgba(254, 240, 138, 0.6)');
+                    gradient.addColorStop(1, 'rgba(254, 240, 138, 0)');
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.moveTo(-15, -20); ctx.lineTo(-70, -220); ctx.lineTo(70, -220); ctx.lineTo(15, -20);
+                    ctx.closePath(); ctx.fill();
+                    ctx.restore();
+                }
+
+                drawTopDownCar(ctx, player.x, player.y, car, true, steeringAngle);
+            }
+
+            // Weather Overlay
+            if (weather.lightOverlay) {
+                ctx.fillStyle = weather.lightOverlay;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            if (selectedWeatherKey === 'rainy') {
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 1.5;
+                weatherParticles.forEach(wp => {
+                    ctx.beginPath();
+                    ctx.moveTo(wp.x, wp.y);
+                    ctx.lineTo(wp.x - 2, wp.y + wp.size);
+                    ctx.stroke();
+                });
+            } else if (selectedWeatherKey === 'snowy') {
+                ctx.fillStyle = '#ffffff';
+                weatherParticles.forEach(wp => {
+                    ctx.beginPath();
+                    ctx.arc(wp.x, wp.y, wp.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+        }
+
+        function gameLoop() {
+            update();
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        window.onload = function() {
+            setupTouchEvents();
+            selectCar(0);
+            selectMap('highway');
+            selectWeather('sunny');
+            gameLoop();
+        };
+    </script>
+</body>
+</html>
